@@ -1120,7 +1120,7 @@ select {
   position: fixed;
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(80px);
   z-index: 900;
   background: var(--orange);
   color: var(--white);
@@ -1135,11 +1135,14 @@ select {
   align-items: center;
   gap: 10px;
   white-space: nowrap;
-  animation: floatup .6s ease both;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease, transform .4s cubic-bezier(.34,1.56,.64,1);
 }
-@keyframes floatup {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+.mobile-cta--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ============================================================

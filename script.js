@@ -131,20 +131,34 @@
 })();
 
 /* ------------------------------------------------------------
-   MOBILE CTA — hide while contact section is in view
-   (so the floating button doesn't cover the form)
+   MOBILE CTA — aparece cuando el botón del hero sale de pantalla,
+   se oculta cuando el contact section es visible
 ------------------------------------------------------------ */
 (function initMobileCta() {
-  const cta     = document.querySelector('.mobile-cta');
-  const contact = document.getElementById('contact');
-  if (!cta || !contact) return;
+  const cta        = document.querySelector('.mobile-cta');
+  const heroBtn    = document.querySelector('.hero-actions .btn-primary');
+  const contact    = document.getElementById('contact');
+  if (!cta || !heroBtn || !contact) return;
 
-  const observer = new IntersectionObserver(([entry]) => {
-    cta.style.opacity    = entry.isIntersecting ? '0' : '';
-    cta.style.pointerEvents = entry.isIntersecting ? 'none' : '';
-  }, { threshold: 0.2 });
+  let heroBtnVisible = true;
+  let contactVisible = false;
 
-  observer.observe(contact);
+  function update() {
+    const show = !heroBtnVisible && !contactVisible;
+    cta.classList.toggle('mobile-cta--visible', show);
+  }
+
+  // Observa el botón del hero
+  new IntersectionObserver(([entry]) => {
+    heroBtnVisible = entry.isIntersecting;
+    update();
+  }, { threshold: 0.5 }).observe(heroBtn);
+
+  // Observa la sección de contacto
+  new IntersectionObserver(([entry]) => {
+    contactVisible = entry.isIntersecting;
+    update();
+  }, { threshold: 0.2 }).observe(contact);
 })();
 
 /* ------------------------------------------------------------
